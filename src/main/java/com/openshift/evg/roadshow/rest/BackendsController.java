@@ -63,7 +63,7 @@ public class BackendsController implements EndpointRegistrar {
     	routeWatcher.init(this);
     	serviceWatcher.init(this);
 
-        String backendHost = System.getProperty("COMPONENT_BACKEND_HOST");
+        String backendHost = System.getenv("COMPONENT_BACKEND_HOST");
         if (backendHost != null)
             register(backendHost);
     }
@@ -79,7 +79,7 @@ public class BackendsController implements EndpointRegistrar {
         Backend newBackend = null;
 
         String endpointUrl = null;
-        String backendHost = System.getProperty("COMPONENT_BACKEND_HOST");
+        String backendHost = System.getenv("COMPONENT_BACKEND_HOST");
         logger.info("Check backend host ({}).", backendHost);
         if (backendHost != null && !backendHost.trim().equals("")) {
             endpointUrl = "http://" + backendHost + ":8080";
