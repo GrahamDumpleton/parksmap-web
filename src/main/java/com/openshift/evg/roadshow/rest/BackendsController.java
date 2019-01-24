@@ -62,6 +62,10 @@ public class BackendsController implements EndpointRegistrar {
     public void init() {
     	routeWatcher.init(this);
     	serviceWatcher.init(this);
+
+        String backendHost = System.getProperty("COMPONENT_BACKEND_HOST");
+        if (backendHost != null)
+            register(backendHost);
     }
 
     /**
@@ -73,8 +77,15 @@ public class BackendsController implements EndpointRegistrar {
         logger.info("Backends.register endpoint at ({})", endpoint);
 
         Backend newBackend = null;
-        
-        String endpointUrl = routeWatcher.getUrl(endpoint); // try to find a route for endpoint
+
+        String endpointUrl = null;
+        String backendHost = System.getProperty("COMPONENT_BACKEND_HOST");
+        if (backendHost != null && !backendHost.trim().equals("")) {
+            endpointUrl = "http://" + backendHost + ":8080";
+        }
+        if (endpointUrl == null || endpointUrl.trim().equals("")) { 
+            endpointUrl = routeWatcher.getUrl(endpoint); // try to find a route for endpoint
+        }
         if (endpointUrl == null || endpointUrl.trim().equals("")) { 
         	endpointUrl = serviceWatcher.getUrl(endpoint); // otherwise, find a service for endpoint
         }
