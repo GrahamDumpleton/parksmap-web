@@ -80,8 +80,10 @@ public class BackendsController implements EndpointRegistrar {
 
         String endpointUrl = null;
         String backendHost = System.getProperty("COMPONENT_BACKEND_HOST");
+        logger.info("Check backend host ({}).", backendHost);
         if (backendHost != null && !backendHost.trim().equals("")) {
             endpointUrl = "http://" + backendHost + ":8080";
+            logger.info("Found backend host ({}).", endpointUrl);
         }
         if (endpointUrl == null || endpointUrl.trim().equals("")) { 
             endpointUrl = routeWatcher.getUrl(endpoint); // try to find a route for endpoint
